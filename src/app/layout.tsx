@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EthGlobal 2024",
-  description: "ETH Global 2024",
+  title: "PrivAI",
+  description: "PrivAI is a privacy-preserving AI platform.",
 };
 
 export default function RootLayout({
