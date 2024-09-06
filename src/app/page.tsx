@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { verifyTelegramUserUtil } from "@/utils/telegramAuth"; // Import the utility
 import { type TelegramUser } from "@/types/telegram";
 import LandingPageUI from "@/components/LandingPage"; // Import the UI component
+import { getPkpSessionSigs } from "@/utils/litProtocol/getPkpSessionSigs";
+import { mintPkp } from "@/utils/litProtocol/mintPkp";
+import { MintedPkp, PkpSessionSigs } from "@/types/litProtocol";
 
 function LandingPage() {
   const NEXT_PUBLIC_TELEGRAM_BOT_NAME =
@@ -13,6 +16,10 @@ function LandingPage() {
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [mintedPkp, setMintedPkp] = useState<MintedPkp | null>(null);
+  const [pkpSessionSigs, setPkpSessionSigs] = useState<PkpSessionSigs | null>(
+    null
+  );
 
   useEffect(() => {
     if (telegramUser) {
@@ -57,12 +64,47 @@ function LandingPage() {
     [NEXT_PUBLIC_TELEGRAM_BOT_SECRET]
   );
 
+  const handleMintPkp = async () => {
+    if (telegramUser) {
+      try {
+        const minted = await mintPkp(telegramUser);
+        setMintedPkp(minted!);
+      } catch (error) {
+        console.error("Failed to mint PKP:", error);
+        setValidationError("Failed to mint PKP. Please try again.");
+      }
+    }
+  };
+
+  const handleGetPkpSessionSigs = async () => {
+    if (telegramUser && mintedPkp) {
+      try {
+        const sessionSigs = await getPkpSessionSigs(
+          telegramUser,
+          mintedPkp,
+          NEXT_PUBLIC_TELEGRAM_BOT_SECRET
+        );
+        setPkpSessionSigs(sessionSigs);
+      } catch (error) {
+        console.error("Failed to get PKP session signatures:", error);
+        setValidationError(
+          "Failed to get PKP session signatures. Please try again."
+        );
+      }
+    }
+  };
+
   return (
     <LandingPageUI
       telegramUser={telegramUser}
       validationError={validationError}
       handleTelegramResponse={handleTelegramResponse}
       botName={NEXT_PUBLIC_TELEGRAM_BOT_NAME}
+      isUserValid={!!telegramUser}
+      handleMintPkp={handleMintPkp}
+      handleGetPkpSessionSigs={handleGetPkpSessionSigs}
+      mintedPkp={mintedPkp}
+      pkpSessionSigs={pkpSessionSigs}
     />
   );
 }

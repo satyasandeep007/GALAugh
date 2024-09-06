@@ -5,6 +5,11 @@ const LandingPageUI = ({
   validationError,
   handleTelegramResponse,
   botName,
+  isUserValid,
+  handleMintPkp,
+  handleGetPkpSessionSigs,
+  mintedPkp,
+  pkpSessionSigs,
 }: any) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-gray-800 bg-gradient-to-b from-blue-500 to-blue-300">
@@ -50,6 +55,37 @@ const LandingPageUI = ({
           dataOnauth={handleTelegramResponse}
         />
       </footer>
+      {isUserValid && (
+        <div className="card">
+          <h4>Step 2: Mint PKP</h4>
+          <button onClick={handleMintPkp} disabled={!!mintedPkp}>
+            {mintedPkp ? "PKP Minted" : "Mint PKP"}
+          </button>
+          {mintedPkp && (
+            <div>
+              <p>Successfully minted PKP!</p>
+              <p>Check the JavaScript console for PKP info</p>
+            </div>
+          )}
+          <hr />
+        </div>
+      )}
+
+      {mintedPkp && (
+        <div className="card">
+          <h4>Step 3: Get PKP Session Signatures</h4>
+          <button onClick={handleGetPkpSessionSigs} disabled={!!pkpSessionSigs}>
+            {pkpSessionSigs ? "Session Sigs Retrieved" : "Get PKP Session Sigs"}
+          </button>
+          {pkpSessionSigs && (
+            <div>
+              <p>Successfully generated Session Signatures!</p>
+              <p>Check the JavaScript console for Session Sigs info</p>
+            </div>
+          )}
+          <hr />
+        </div>
+      )}
     </div>
   );
 };
