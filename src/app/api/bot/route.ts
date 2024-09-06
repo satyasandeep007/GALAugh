@@ -27,8 +27,26 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json({ status: "ok" });
+    } else if (message?.text) {
+      const chatId = message.chat.id;
+
+      const response = await fetch(`${TELEGRAM_API_URL}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `Message Received: ${message.text}`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to send message: ${response.statusText}`);
+      }
+
+      return NextResponse.json({ status: "ok" });
     }
-    return NextResponse.json({ status: "unhandled message" });
   } catch (error: any) {
     console.error("Error handling the request:", error.message);
     return NextResponse.json({ status: "error", message: error.message });
