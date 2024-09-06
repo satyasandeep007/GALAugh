@@ -68,6 +68,8 @@ function LandingPage() {
     if (telegramUser) {
       try {
         const minted = await mintPkp(telegramUser);
+        console.log(minted, "minted");
+
         setMintedPkp(minted!);
       } catch (error) {
         console.error("Failed to mint PKP:", error);
