@@ -20,20 +20,13 @@ export interface MintedPkp {
 export const getPkpSessionSigs = async (
   telegramUser: TelegramUser,
   mintedPkp: MintedPkp,
-  botSecret: string
+  botSecret: string,
+  litContracts: any,
+  ethersSigner: any
 ) => {
   let litNodeClient: LitNodeClient;
 
   try {
-    console.log("🔄 Connecting to Ethereum account...");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const ethersSigner = provider.getSigner();
-    console.log(
-      "✅ Connected Ethereum account:",
-      await ethersSigner.getAddress()
-    );
-
     console.log("🔄 Connecting LitNodeClient to Lit network...");
     litNodeClient = new LitNodeClient({
       litNetwork: LitNetwork.DatilTest,
@@ -41,16 +34,6 @@ export const getPkpSessionSigs = async (
     });
     await litNodeClient.connect();
     console.log("✅ Connected LitNodeClient to Lit network");
-
-    console.log("🔄 Connecting LitContracts client to network...");
-    const litContracts = new LitContracts({
-      signer: ethersSigner,
-      network: LitNetwork.DatilTest,
-      debug: false,
-    });
-    await litContracts.connect();
-    console.log("✅ Connected LitContracts client to network");
-
     let capacityTokenId;
     if (capacityTokenId === undefined) {
       console.log("🔄 Minting Capacity Credits NFT...");
