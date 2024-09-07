@@ -20,6 +20,8 @@ function LandingPage() {
   const [pkpSessionSigs, setPkpSessionSigs] = useState<PkpSessionSigs | null>(
     null
   );
+  const [litContracts, setLitContracts] = useState<any>(null);
+  const [ethersSigner, setEthersSigner] = useState<any>(null);
 
   useEffect(() => {
     if (telegramUser) {
@@ -67,8 +69,16 @@ function LandingPage() {
   const handleMintPkp = async () => {
     if (telegramUser) {
       try {
-        const minted = await mintPkp(telegramUser);
-        setMintedPkp(minted!);
+        const { pkpInfo, litContracts, provider, ethersSigner }: any =
+          await mintPkp(telegramUser);
+        console.log(pkpInfo, "pkpInfo");
+        console.log(litContracts, "litContracts");
+        console.log(provider, "provider");
+        console.log(ethersSigner, "ethersSigner");
+        setLitContracts(litContracts);
+        setEthersSigner(ethersSigner);
+
+        setMintedPkp(pkpInfo!);
       } catch (error) {
         console.error("Failed to mint PKP:", error);
         setValidationError("Failed to mint PKP. Please try again.");
@@ -82,7 +92,9 @@ function LandingPage() {
         const sessionSigs = await getPkpSessionSigs(
           telegramUser,
           mintedPkp,
-          NEXT_PUBLIC_TELEGRAM_BOT_SECRET
+          NEXT_PUBLIC_TELEGRAM_BOT_SECRET,
+          litContracts,
+          ethersSigner
         );
         setPkpSessionSigs(sessionSigs);
       } catch (error) {

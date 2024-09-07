@@ -1,7 +1,7 @@
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { LitNetwork } from "@lit-protocol/constants";
 import { LitContracts } from "@lit-protocol/contracts-sdk";
-import { ethers } from "ethers";
+
 import {
   LitAbility,
   LitActionResource,
@@ -20,20 +20,13 @@ export interface MintedPkp {
 export const getPkpSessionSigs = async (
   telegramUser: TelegramUser,
   mintedPkp: MintedPkp,
-  botSecret: string
+  botSecret: string,
+  litContracts: any,
+  ethersSigner: any
 ) => {
   let litNodeClient: LitNodeClient;
 
   try {
-    console.log("🔄 Connecting to Ethereum account...");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const ethersSigner = provider.getSigner();
-    console.log(
-      "✅ Connected Ethereum account:",
-      await ethersSigner.getAddress()
-    );
-
     console.log("🔄 Connecting LitNodeClient to Lit network...");
     litNodeClient = new LitNodeClient({
       litNetwork: LitNetwork.DatilDev,

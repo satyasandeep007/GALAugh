@@ -88,7 +88,8 @@ export const mintPkp = async (telegramUser: TelegramUser) => {
       )}`
     );
 
-    return pkpInfo;
+    const resp = { pkpInfo, litContracts, provider, ethersSigner };
+    return resp;
   } catch (error) {
     console.error(error);
   }

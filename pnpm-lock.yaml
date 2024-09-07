@@ -27,7 +27,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       ethers:
-        specifier: ^5.7.2
+        specifier: v5
         version: 5.7.2
       ipfs-only-hash:
         specifier: ^4.0.0

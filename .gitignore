@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+.env
 
 # Build output
 .next/
@@ -23,3 +24,4 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+.env
