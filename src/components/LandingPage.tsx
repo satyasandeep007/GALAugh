@@ -91,14 +91,6 @@ const LandingPageUI = ({
           <hr />
         </div>
       )}
-
-      {/* Display URL parameters if they exist */}
-      {(referralCode || source) && (
-        <div className="mt-4 text-white">
-          {referralCode && <p>Referral Code: {referralCode}</p>}
-          {source && <p>Source: {source}</p>}
-        </div>
-      )}
     </div>
   );
 };

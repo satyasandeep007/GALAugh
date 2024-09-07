@@ -40,8 +40,13 @@ const TelegramLoginButton: React.FC<TelegramLoginButtonProps> = ({
     script.setAttribute("data-telegram-login", botName);
     script.setAttribute("data-size", buttonSize);
     script.setAttribute("data-request-access", requestAccess);
-    // Update the data-auth-url attribute to point to your mini app
-    script.setAttribute("data-auth-url", `https://t.me/${botName}/app?startapp=auth_success`);
+    
+    // Create a URL for the mini app that will handle the OAuth flow
+    const miniAppUrl = new URL(`https://t.me/${botName}/app`);
+    miniAppUrl.searchParams.append("startapp", "start_oauth");
+    miniAppUrl.searchParams.append("return_to", window.location.href);
+
+    script.setAttribute("data-auth-url", miniAppUrl.toString());
 
     containerRef.current?.appendChild(script);
 
