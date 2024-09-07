@@ -17,7 +17,7 @@ const LandingPageUI = ({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-gray-800 bg-gradient-to-b from-blue-500 to-blue-300">
       <header className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-white">PrivAI</h1>
+        <h1 className="text-5xl font-extrabold text-white">PrivI</h1>
         <p className="mt-4 text-lg text-white">
           {JSON.stringify(searchParams)}
         </p>
