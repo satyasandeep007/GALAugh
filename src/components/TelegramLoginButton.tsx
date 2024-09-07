@@ -40,13 +40,14 @@ const TelegramLoginButton: React.FC<TelegramLoginButtonProps> = ({
     script.setAttribute("data-telegram-login", botName);
     script.setAttribute("data-size", buttonSize);
     script.setAttribute("data-request-access", requestAccess);
-    script.setAttribute("data-onauth", "TelegramLoginCallback(user)");
+    // Add the data-auth-url attribute
+    script.setAttribute("data-auth-url", `https://t.me/${botName}`);
 
     containerRef.current?.appendChild(script);
 
     return () => {
       containerRef.current?.removeChild(script);
-      delete window.TelegramLoginCallback;
+      // delete window.TelegramLoginCallback;
     };
   }, [botName, handleAuth, buttonSize, requestAccess]);
 
