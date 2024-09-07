@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import TelegramLoginButton from "@/components/TelegramLoginButton";
 
 const LandingPageUI = ({
@@ -11,11 +12,15 @@ const LandingPageUI = ({
   mintedPkp,
   pkpSessionSigs,
 }: any) => {
+  const searchParams = useSearchParams();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-gray-800 bg-gradient-to-b from-blue-500 to-blue-300">
       <header className="text-center mb-12">
         <h1 className="text-5xl font-extrabold text-white">PrivAI</h1>
-        <p className="mt-4 text-lg text-white">Your Privacy, Our Priority</p>
+        <p className="mt-4 text-lg text-white">
+          {JSON.stringify(searchParams)}
+        </p>
         <p className="mt-2 text-md text-gray-200">
           Experience the future of secure communication.
         </p>
@@ -84,6 +89,14 @@ const LandingPageUI = ({
             </div>
           )}
           <hr />
+        </div>
+      )}
+
+      {/* Display URL parameters if they exist */}
+      {(referralCode || source) && (
+        <div className="mt-4 text-white">
+          {referralCode && <p>Referral Code: {referralCode}</p>}
+          {source && <p>Source: {source}</p>}
         </div>
       )}
     </div>
