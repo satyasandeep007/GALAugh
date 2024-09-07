@@ -21,7 +21,7 @@ export default function SignUpView() {
     authMethod,
     authWithEthWallet,
     authWithWebAuthn,
-    authWithStytch,
+
     loading: authLoading,
     error: authError,
   } = useAuthenticate(redirectUri);
@@ -113,7 +113,7 @@ export default function SignUpView() {
         authWithEthWallet={authWithEthWallet}
         registerWithWebAuthn={registerWithWebAuthn}
         authWithWebAuthn={authWithWebAuthn}
-        authWithStytch={authWithStytch}
+        // authWithStytch={authWithStytch}
         goToLogin={() => router.push('/login')}
         error={error}
       />

@@ -5,7 +5,6 @@ import { goerli, mainnet, optimism } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-// import { StytchProvider } from '@stytch/nextjs';
 import { createStytchUIClient } from '@stytch/nextjs/ui';
 import { Albert_Sans } from 'next/font/google';
 import Image from 'next/image';
@@ -42,7 +41,6 @@ const font = Albert_Sans({ subsets: ['latin'] });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    // <StytchProvider stytch={stytch}>
     <WagmiConfig client={client}>
       <header>
         <Image src="/lit.svg" alt="Lit logo" width={32} height={32}></Image>
@@ -58,17 +56,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <main className={font.className}>
         <Component {...pageProps} />
       </main>
-      <footer>
-        <a
-          href="https://github.com/LIT-Protocol/pkp-social-auth-example"
-          target="_blank"
-          rel="noopener nofollow"
-          className="footer-link"
-        >
-          View the source code
-        </a>
-      </footer>
     </WagmiConfig>
-    // </StytchProvider>
   );
 }

@@ -1,9 +1,7 @@
 import { useState } from 'react';
-
 import AuthMethods from './AuthMethods';
 import WalletMethods from './WalletMethods';
 import WebAuthn from './WebAuthn';
-import StytchOTP from './StytchOTP';
 import { SELECTED_LIT_NETWORK } from '../utils/lit';
 
 interface SignUpProps {
@@ -12,7 +10,6 @@ interface SignUpProps {
   authWithEthWallet: any;
   registerWithWebAuthn: any;
   authWithWebAuthn: any;
-  authWithStytch: any;
   goToLogin: any;
   error?: Error;
 }
@@ -25,7 +22,6 @@ export default function SignUpMethods({
   authWithEthWallet,
   registerWithWebAuthn,
   authWithWebAuthn,
-  authWithStytch,
   goToLogin,
   error,
 }: SignUpProps) {
@@ -63,20 +59,7 @@ export default function SignUpMethods({
             </div>
           </>
         )}
-        {view === 'email' && (
-          <StytchOTP
-            method={'email'}
-            authWithStytch={authWithStytch}
-            setView={setView}
-          />
-        )}
-        {view === 'phone' && (
-          <StytchOTP
-            method={'phone'}
-            authWithStytch={authWithStytch}
-            setView={setView}
-          />
-        )}
+
         {view === 'wallet' && (
           <WalletMethods
             authWithEthWallet={authWithEthWallet}
