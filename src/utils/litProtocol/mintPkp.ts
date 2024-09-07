@@ -26,7 +26,7 @@ export const mintPkp = async (telegramUser: TelegramUser) => {
     console.log("🔄 Connecting LitContracts client to network...");
     const litContracts = new LitContracts({
       signer: ethersSigner,
-      network: LitNetwork.DatilTest,
+      network: LitNetwork.DatilDev,
     });
     await litContracts.connect();
     console.log("✅ Connected LitContracts client to network");
