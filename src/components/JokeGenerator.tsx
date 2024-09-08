@@ -13,28 +13,6 @@ export default function JokeGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        if (web3auth.status === 'not_ready') {
-          await web3auth.init();
-        }
-        if (web3auth.status === 'connected') {
-          await initClients();
-          setIsInitialized(true);
-        }
-      } catch (error) {
-        console.error('Error initializing:', error);
-        setError(
-          'Failed to initialize. Please check your connection and try again.'
-        );
-      }
-    };
-
-    init();
-  }, []);
 
   const generateJoke = async () => {
     setError(null);
@@ -46,34 +24,27 @@ export default function JokeGenerator() {
       );
       return;
     }
+    const contractAddress = '0x13C081cfec90B538dc8334D405Df2F24a41b76B2';
 
     setIsGenerating(true);
     try {
-      const contractAddress = '0x13C081cfec90B538dc8334D405Df2F24a41b76B2';
-      const [account] = await walletClient.getAddresses();
       const args = [`Tell Me a joke on ${keyword}`];
       console.log(args, 'args');
 
+      const address = await walletClient.getAddresses();
+
       // Submit transaction to the blockchain
-      try {
-        const hash = await walletClient.writeContract({
-          account: account,
-          address: contractAddress,
-          abi: contractABI,
-          functionName: 'sendMessage',
-          args,
-          chain: galadriel,
-        });
-        console.log('Transaction hash:', hash);
+      const hash = await walletClient.writeContract({
+        account: address[0],
+        address: contractAddress,
+        abi: JSON.parse(JSON.stringify(contractABI)),
+        functionName: 'sendMessage',
+        args: args,
+      });
 
-        setTransactionHash(hash);
-
-        // Wait for transaction receipt
-        const receipt = await publicClient.waitForTransactionReceipt({ hash });
-        console.log('Transaction receipt:', receipt);
-      } catch (error) {
-        console.error('Error writing contract:', error);
-      }
+      // Send transaction to smart contract to update message
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      console.log('Transaction receipt:', receipt);
 
       // Poll for response
       const checkResponse = async () => {
@@ -97,14 +68,6 @@ export default function JokeGenerator() {
     }
   };
 
-  if (!isInitialized) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loading />
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white dark:bg-zinc-800/30 shadow-lg rounded-lg p-8 max-w-md w-full mx-auto mt-10">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
@@ -126,7 +89,7 @@ export default function JokeGenerator() {
       </div>
       <button
         onClick={generateJoke}
-        disabled={isGenerating || !isInitialized}
+        disabled={isGenerating}
         className="bg-purple-600 text-white px-4 py-2 rounded-md w-full hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 disabled:bg-purple-400"
       >
         {isGenerating ? 'Generating...' : 'Generate Joke'}
