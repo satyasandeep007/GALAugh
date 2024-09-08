@@ -1,22 +1,9 @@
-interface LoadingProps {
-  copy: string;
-  error?: Error;
-}
+import React from 'react';
 
-export default function Loading({ copy, error }: LoadingProps) {
+const Loading: React.FC = () => {
   return (
-    <div className="container">
-      <div className="wrapper">
-        {error && (
-          <div className="alert alert--error">
-            <p>{error.message}</p>
-          </div>
-        )}
-        <div className="loader-container">
-          <div className="loader"></div>
-          <p>{copy}</p>
-        </div>
-      </div>
-    </div>
+    <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-blue-500"></div>
   );
-}
+};
+
+export default Loading;
