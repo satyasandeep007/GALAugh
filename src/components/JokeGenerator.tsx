@@ -50,29 +50,30 @@ export default function JokeGenerator() {
     setIsGenerating(true);
     try {
       const contractAddress = '0x13C081cfec90B538dc8334D405Df2F24a41b76B2';
-      // Check if the address is a contract
-      const code = await publicClient.getBytecode({ address: contractAddress });
-      if (!code) {
-        throw new Error('The provided address is not a contract');
-      }
-
-      const [address] = await walletClient.getAddresses();
+      const [account] = await walletClient.getAddresses();
+      const args = [`Tell Me a joke on ${keyword}`];
+      console.log(args, 'args');
 
       // Submit transaction to the blockchain
-      const hash = await walletClient.writeContract({
-        account: address,
-        address: contractAddress,
-        abi: contractABI,
-        functionName: 'sendMessage',
-        args: ['Tell Me a joke on ' + keyword],
-        chain: galadriel,
-      });
+      try {
+        const hash = await walletClient.writeContract({
+          account: account,
+          address: contractAddress,
+          abi: contractABI,
+          functionName: 'sendMessage',
+          args,
+          chain: galadriel,
+        });
+        console.log('Transaction hash:', hash);
 
-      setTransactionHash(hash);
+        setTransactionHash(hash);
 
-      // Wait for transaction receipt
-      const receipt = await publicClient.waitForTransactionReceipt({ hash });
-      console.log('Transaction receipt:', receipt);
+        // Wait for transaction receipt
+        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        console.log('Transaction receipt:', receipt);
+      } catch (error) {
+        console.error('Error writing contract:', error);
+      }
 
       // Poll for response
       const checkResponse = async () => {
