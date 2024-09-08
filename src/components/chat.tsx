@@ -123,7 +123,7 @@ export default function Chat({ session }: any) {
     <div className="flex flex-col min-h-screen bg-gray-400 w-full">
       <Header session={session} balance={balance} isLoading={isLoading} />
 
-      <JokeGenerator />
+      <JokeGenerator provider={provider} />
     </div>
   );
 }
