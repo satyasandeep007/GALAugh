@@ -107,8 +107,9 @@ export default function UserInfo({ session }: UserInfoProps) {
   const sendTransaction = async () => {
     const walletClient = getWalletClient();
     const publicClient = getPublicClient();
-    const destination = '0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8';
+    const destination = '0x5B4d77e199FE8e5090009C72d2a5581C74FEbE89';
     const amount = parseEther('0.0001');
+
     if (walletClient && publicClient) {
       const hash = await walletClient.sendTransaction({
         account: publicAddress as `0x${string}`,
