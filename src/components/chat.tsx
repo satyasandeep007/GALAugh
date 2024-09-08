@@ -7,21 +7,15 @@ import {
   getPublicClient,
   getWalletClient,
   initClients,
-  parseEther,
 } from '@/lib/client';
 import { decodeToken, web3auth } from '@/lib/web3auth';
 import Header from '@/components/layout/Header';
 
 export default function Chat({ session }: any) {
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<
-    { type: 'user' | 'bot'; content: string }[]
-  >([]);
   const [provider, setProvider] = useState<any>(null);
   const [publicAddress, setPublicAddress] = useState<string | null>(null);
   const [balance, setBalance] = useState<string | null>('0');
   const [isLoading, setIsLoading] = useState(true);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -83,47 +77,11 @@ export default function Chat({ session }: any) {
     }
   }, [provider]);
 
-  const generateJoke = async () => {
-    setIsLoading(true);
-    try {
-      // Replace this with your actual AI joke generation API call
-      const response = await fetch('/api/generate-joke');
-      const data = await response.json();
-      setMessages(prev => [...prev, { type: 'bot', content: data.joke }]);
-    } catch (error) {
-      console.error('Error generating joke:', error);
-      setMessages(prev => [
-        ...prev,
-        {
-          type: 'bot',
-          content: "Sorry, I couldn't think of a joke right now.",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    setMessages(prev => [...prev, { type: 'user', content: input }]);
-    setInput('');
-    generateJoke();
-  };
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
   return (
     <div className="flex flex-col min-h-screen bg-gray-400 w-full">
       <Header session={session} balance={balance} isLoading={isLoading} />
 
-      <JokeGenerator provider={provider} />
+      <JokeGenerator />
     </div>
   );
 }
